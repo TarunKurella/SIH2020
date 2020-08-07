@@ -1,6 +1,6 @@
 # inventory_manage
 
-A new Flutter project.
+A Flutter project built for SIH hackothon, by Tarun and Krithik.
 
 ## Getting Started
 
