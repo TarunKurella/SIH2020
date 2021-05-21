@@ -33,12 +33,14 @@ class _MyHomePageState extends State<MyHomePage> {
         "Put Template",
         style: TextStyle(color: Color.fromARGB(250, 18, 70, 255)),
       ),
-      onPressed: () {
+      onPressed: () async{
         var formm = jsonEncode({
           "tname":widget.tname,
-          "template":template,
+          "template":template.toString(),
         });
-        http.post("https://upnr.azurewebsites.net/puttemplate",body: formm);
+        var response = await http.post("https://formfield.azurewebsites.net/puttemplate",body: formm,headers: {"Content-Type": "application/json"});
+        print(response.body);
+        print(formm);
 
 //        Navigator.push(context,
 //            MaterialPageRoute(builder: (context) => JsonBuilder(formm)));

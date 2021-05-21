@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -42,10 +41,10 @@ class RecordsPageState extends State<RecordsPage> {
   RecordsPageState(this._username, this._password, this._qrCode);
 
   Future _getRecords(var _qrCode) async {
-    _qrCode = "mechrt5agukcod";
+    _qrCode = "090b4323-5608-40ca-9c21-74e2a7b09f37";
 
     var response = await http
-        .get("https://upnr.azurewebsites.net/getmachine?uid="+_qrCode);
+        .get("https://formfield.azurewebsites.net/getmachine?uid="+_qrCode);
     return response;
   }
 
@@ -71,11 +70,11 @@ class RecordsPageState extends State<RecordsPage> {
               var response = json.decode(snapshot.data.body);
               var data = response["records"];
               machineData = {
-                "model": response["model"],
-                "brand": response["brand"],
-                "eqtype": response["eqtype"],
-                "serialno": response["serialno"],
-                "doi": response["doi"],
+                "model": response["machine"]["model"],
+                "brand": response["machine"]["brand"],
+                "eqtype": response["machine"]["eqtype"],
+                "serialno": response["machine"]["serialno"],
+                "doi": response["machine"]["doi"],
                 "template":response["template"]
               };
               return Stack(
@@ -159,15 +158,7 @@ class RecordsPageState extends State<RecordsPage> {
                                     flex: 2,
                                     child: Column(
                                       children: <Widget>[
-                                        Expanded(
-                                          flex: 3,
-                                          child: Container(
-                                            child: Text(
-                                              machineData["model"],
-                                              style: TextStyle(fontSize: 24.0),
-                                            ),
-                                          ),
-                                        ),
+
                                         Expanded(
                                           flex: 1,
                                           child: Container(
@@ -262,7 +253,7 @@ class RecordsPageState extends State<RecordsPage> {
                                               flex: 2,
                                               child: Container(
                                                 child: Text(
-                                                  data[index]["worker"],
+                                                  data[index]["wid_s"].toString(),
                                                   style:
                                                       TextStyle(fontSize: 18.0),
                                                 ),
@@ -440,7 +431,8 @@ class MachineDetailsPage extends StatelessWidget {
                     style: TextStyle(fontSize: 28.0),
                   ),
                   Text(
-                    machineData["doi"],
+                    dateTimeFromString(json['dateTime'], "yMdHms")
+                    ,
                     style: TextStyle(fontSize: 24.0),
                   ),
                 ],
