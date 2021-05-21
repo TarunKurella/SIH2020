@@ -38,8 +38,8 @@ class QRPageState extends State<QRPage> {
 
   Future _postData() async {
     var data = json.encode(_details);
-    var _response = await http.post("https://upnr.azurewebsites.net/putmachine",
-        body: data);
+    var _response = await http.post("https://formfield.azurewebsites.net/putmachine",
+        body: data,headers: {"Content-Type": "application/json"});
     print(_response.body);
     return _response;
   }

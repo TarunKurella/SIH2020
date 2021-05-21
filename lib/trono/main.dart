@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onPressed: () async{
         var formm = jsonEncode({
           "tname":widget.tname,
-          "template":template.toString(),
+          "template":jsonEncode(template),
         });
         var response = await http.post("https://formfield.azurewebsites.net/puttemplate",body: formm,headers: {"Content-Type": "application/json"});
         print(response.body);

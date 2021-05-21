@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -40,8 +41,10 @@ class RecordsPageState extends State<RecordsPage> {
 
   RecordsPageState(this._username, this._password, this._qrCode);
 
-  Future _getRecords(var _qrCode) async {
-    _qrCode = "090b4323-5608-40ca-9c21-74e2a7b09f37";
+  Future _getRecords(var _qrCode2) async {
+
+    _qrCode2 = "6e4b4f53-3f9d-457b-85e0-889f6a5d3097";
+    _qrCode=_qrCode2;
 
     var response = await http
         .get("https://formfield.azurewebsites.net/getmachine?uid="+_qrCode);
@@ -75,7 +78,7 @@ class RecordsPageState extends State<RecordsPage> {
                 "eqtype": response["machine"]["eqtype"],
                 "serialno": response["machine"]["serialno"],
                 "doi": response["machine"]["doi"],
-                "template":response["template"]
+                "template":jsonDecode(response["template"])
               };
               return Stack(
                 children: <Widget>[
@@ -220,7 +223,7 @@ class RecordsPageState extends State<RecordsPage> {
                                     //Add a function to display all the details in the file
                                     Navigator.push(context, MaterialPageRoute(builder: (context){
                                       print(data[index]["record"]);
-                                      return JsonBuilder(data[index]["record"],isResponse: false);}));
+                                      return JsonBuilder(jsonDecode(data[index]["record"]),isResponse: false);}));
                                   },
                                   child: Row(
                                     children: <Widget>[
@@ -283,7 +286,7 @@ class RecordsPageState extends State<RecordsPage> {
                           flex: 1,
                           child: InkWell(
                             onTap: (){
-
+                              print(machineData["template"]);
                               Navigator.push(context, MaterialPageRoute(builder: (context){
 
                                 return JsonBuilder(machineData["template"],isResponse: true,uid: _qrCode ,uname: _username,);}));
@@ -431,7 +434,7 @@ class MachineDetailsPage extends StatelessWidget {
                     style: TextStyle(fontSize: 28.0),
                   ),
                   Text(
-                    dateTimeFromString(json['dateTime'], "yMdHms")
+                    machineData["doi"]
                     ,
                     style: TextStyle(fontSize: 24.0),
                   ),

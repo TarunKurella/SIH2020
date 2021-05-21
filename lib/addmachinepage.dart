@@ -35,7 +35,7 @@ class MachinePageState extends State<MachinePage> {
         BoxShadow(
             offset: Offset(0.0, 0.6), color: Colors.grey, blurRadius: 25.0)
       ]);
-  Future responsee;
+  var responsee;
   void initState() {
     _getTemplates();
     templates.add(
@@ -49,20 +49,21 @@ class MachinePageState extends State<MachinePage> {
   MachinePageState(this._username,this._password);
 
   void setData() {
+    // ((day.toString().replaceAll(day.toString().substring(10), " ")) +
+    //               time.toString().substring(10));
     if (equip && model && brand && serial && (dropdownvalue != null)) {
       details["eqtype"] = equipmentType;
       details["brand"] = brandName;
       details["model"] = modelNumber;
       details["serialno"] = serialNumber;
-      details["doi"] =
-          ((day.toString().replaceAll(day.toString().substring(10), " ")) +
-              time.toString().substring(10));
+      details["doi"] ="2017-01-21";
+     details["uid"]="";
       details["tname"] = dropdownvalue;
     }
   }
 
   void _getTemplates() async {
-    responsee = http.get("https://upnr.azurewebsites.net/gettemplates");
+    responsee = http.get("https://formfield.azurewebsites.net/gettemplates");
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -284,13 +285,14 @@ class MachinePageState extends State<MachinePage> {
                         if (snapshot.hasData) {
                           int i;
                           _templates = json.decode(snapshot.data.body);
-                          var data = _templates.values.toList();
-                          var temps = data[0];
+                          print(_templates);
+
+                          var temps = _templates;
                           if (!checkFlag) {
                             for (i = 0; i < temps.length; i++) {
                               templates.add(DropdownMenuItem(
-                                child: Text(temps[i].toString()),
-                                value: temps[i],
+                                child: Text(temps[i]["tname"].toString()),
+                                value: temps[i]["tname"],
                               ));
                             }
                             checkFlag = true;

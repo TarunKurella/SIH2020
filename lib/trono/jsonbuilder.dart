@@ -6,7 +6,7 @@ import 'models/template.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 
 class JsonBuilder extends StatefulWidget{
-  String form;
+  var form;
   String uid;
   bool isResponse ;
   String uname;
@@ -29,12 +29,17 @@ class JsonBuilderState extends State<JsonBuilder>{
             onPressed: ()async {
 
               var sendRecord = {
-                "dos": "21/10/99",
-                "worker": widget.uname,
-                "record": this.response,
+                "s_no": "",
+                "dos": "2017-01-21",
+                "wid_s": "1",
+                "doc":"",
+                "wid_c": "",
+                "record": jsonEncode(response),
+                "status":"true",
                 "uid":widget.uid
               };
-              var respons = await http.post("https://upnr.azurewebsites.net/putrecord",body: json.encode(sendRecord) );
+              print(widget.uid);
+              var respons = await http.post("https://formfield.azurewebsites.net/putrecord",body: json.encode(sendRecord),headers: {"Content-Type": "application/json"} );
               print(respons.body);
               Navigator.pop(context);
              print(this.response);
@@ -63,9 +68,10 @@ class JsonBuilderState extends State<JsonBuilder>{
 // in the middle of the parent.
           child: new Column(children: <Widget>[
             new CoreForm(
-              form: widget.form,
+              form: jsonEncode(widget.form),
               onChanged: (dynamic response) {
                 this.response = response;
+
               },
             ),
             giveButton()
